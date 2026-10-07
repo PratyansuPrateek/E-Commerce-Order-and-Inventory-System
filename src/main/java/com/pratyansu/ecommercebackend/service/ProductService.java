@@ -4,6 +4,7 @@ import com.pratyansu.ecommercebackend.dto.ProductRequest;
 import com.pratyansu.ecommercebackend.dto.ProductResponse;
 import com.pratyansu.ecommercebackend.entity.Category;
 import com.pratyansu.ecommercebackend.entity.Product;
+import com.pratyansu.ecommercebackend.exception.ResourceNotFoundException;
 import com.pratyansu.ecommercebackend.repository.CategoryRepository;
 import com.pratyansu.ecommercebackend.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +24,7 @@ public class ProductService {
     public ProductResponse createProduct(ProductRequest request){
         Category category = categoryRepository
                 .findById(request.getCategoryId())
-                .orElseThrow(()-> new RuntimeException("Category not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Category not found"));
 
         Product product = new Product();
         product.setName(request.getName());
@@ -50,7 +51,7 @@ public class ProductService {
     public ProductResponse getProductById(Long id){
         Product product = productRepository
                 .findById(id)
-                .orElseThrow(()-> new RuntimeException("Product not found"));
+                .orElseThrow(()-> new ResourceNotFoundException("Product not found"));
         return mapToResponse(product);
     }
 
